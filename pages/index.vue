@@ -33,7 +33,7 @@ export default {
   name: 'IndexPage',
   methods: {
     goToLogIn () {
-      this.$router.push('/logIn')
+      this.$ro`uter.push('/logIn')
     }
   }
 }
@@ -81,25 +81,20 @@ export default {
 
     &--name {
       font-size: 24px;
+      font-weight: 500;
       margin-bottom: 50px;
       color: $color-gray;
     }
 
     &--moto {
       font-size: 28px;
+      font-weight: 700;
       color: white;
       text-align: center;
     }
   }
 
   &__button {
-    width: 100%;
-    font-size: 16px;
-    padding: 15px 32px;
-    background-color: white;
-    border: none;
-    border-radius: 50px;
-    cursor: pointer;
   }
 }
 </style>

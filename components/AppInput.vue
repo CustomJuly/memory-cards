@@ -3,27 +3,38 @@
     class="input"
     @click="$refs.control.focus()"
   >
-    <p
-      class="input__placeholder"
-      :class="{ 'input__placeholder--displaced': isTriggered }"
+    <slot name="prefix" />
+    <div
+      class="input__control-wrapper"
+      :class="{ 'ml-16': $slots.prefix }"
     >
-      {{ placeholder }}
-    </p>
-    <input
-      ref="control"
-      :value="value"
-      type="text"
-      class="input__control"
-      @input="$emit('input', $event.target.value)"
-      @focus="focused = true"
-      @blur="focused = false"
-    >
+      <p
+        class="input__placeholder"
+        :class="{ 'input__placeholder--displaced': isTriggered }"
+      >
+        {{ placeholder }}
+      </p>
+      <input
+        ref="control"
+        :value="value"
+        type="text"
+        class="input__control"
+        @input="$emit('input', $event.target.value)"
+        @keydown.enter="$emit('enter')"
+        @focus="focused = true"
+        @blur="focused = false"
+      >
+    </div>
   </div>
 </template>
 
 <script>
 export default {
   name: 'AppInput',
+  model: {
+    prop: 'value',
+    event: 'input'
+  },
   props: {
     placeholder: {
       type: String,
@@ -32,16 +43,26 @@ export default {
     value: {
       type: String,
       required: true
+    },
+    autofocus: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
-  data() {
+  data () {
     return {
       focused: false
     }
   },
   computed: {
-    isTriggered() {
+    isTriggered () {
       return !!this.value || this.focused
+    }
+  },
+  mounted () {
+    if (this.autofocus) {
+      this.$refs.control.focus()
     }
   }
 }
@@ -51,37 +72,45 @@ export default {
 @import '~assets/vars';
 
 .input {
-  min-width: 280px;
-  height: 48px;
+  display: flex;
+  align-items: center;
+  height: 50px;
   border: 1px solid #E3E5E6;
-  position: relative;
   border-radius: 8px;
-  padding: 8px 16px;
+  padding: 16px;
+
+  &__control-wrapper {
+    flex: 1;
+    height: 100%;
+    position: relative;
+  }
 
   &__placeholder {
     position: absolute;
-    top: 14px;
-    left: 14px;
+    top: 0;
+    left: 0;
     font-size: 16px;
     line-height: 16px;
     user-select: none;
     transition: all 200ms cubic-bezier(0.62, -0.43, 0.34, 1.41);
+    color: $color-sky-dark;
 
     &--displaced {
-      top: 8px;
-      left: 16px;
+      top: -8px;
       font-size: 12px;
       line-height: 12px;
     }
   }
 
   &__control {
+    width: 100%;
+    height: 20px;
     padding: 0;
     position: absolute;
-    top: 24px;
-    left: 16px;
+    top: 8px;
+    left: 0;
     font-size: 16px;
-    line-height: 16px;
+    line-height: 20px;
     outline: none;
     border: none;
     background: transparent;

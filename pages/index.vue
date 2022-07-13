@@ -1,100 +1,60 @@
 <template>
-  <div class="index"
-       @click="$emit('click')"
-  >
-    <div class="index__background">
-      <img
-        class="index__background--img"
-        src="/Image.png"
-        alt="img-background"
+  <div class="index">
+    <TopBar hide-back-btn>
+      {{ $t('hi') }}{{ username ? `, ${username}!` : '!' }}
+    </TopBar>
+    <div class="index__modes">
+      <div
+        class="index__mode"
+        @click="$router.push(localePath('/learn'))"
       >
-    </div>
-    <div class="index__foreground">
-      <div class="index__heading">
-        <div class="index__heading--name">
-          YourMemoryCards
-        </div>
-        <div class="index__heading--moto">
-          Learn the words you need from flashcards
-        </div>
+        {{ $t('training') }}
       </div>
-      <AppButton
-        class="index__button"
-        @click="goToLogIn"
-      >
-        Get started
-      </AppButton>
     </div>
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from 'vue'
+import {appStore} from "~/utils/store-accessor";
+
+export default Vue.extend({
   name: 'IndexPage',
-  methods: {
-    goToLogIn () {
-      this.$ro`uter.push('/logIn')
+  computed: {
+    username() {
+      return appStore.profile.name
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>
 @import '~assets/vars';
 
 .index {
-  margin: 0 auto;
-  min-height: 100vh;
-  min-width: 320px;
-  max-width: 512px;
-  position: relative;
-
-  &__background {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    min-height: 100%;
-
-    &--img {
-      width: 100%;
-    }
+  &__modes {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    padding: 12px;
   }
 
-  &__foreground {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    min-height: 100%;
-    padding: 60px 20px;
+  &__mode {
+    padding: 10px;
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-
-  &__heading {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-
-    &--name {
-      font-size: 24px;
-      font-weight: 500;
-      margin-bottom: 50px;
-      color: $color-gray;
-    }
-
-    &--moto {
-      font-size: 28px;
-      font-weight: 700;
-      color: white;
-      text-align: center;
-    }
-  }
-
-  &__button {
+    justify-content: flex-end;
+    align-items: flex-end;
+    min-height: 200px;
+    border-radius: 16px;
+    font-size: 18px;
+    line-height: 22px;
+    color: $color-sky-lighter;
+    font-weight: 500;
+    background-image: linear-gradient(125deg, rgba(150, 130, 255, 1) 0%, rgba(132, 109, 255, 1) 30%, rgba(119, 93, 255, 1) 30%, rgba(121, 95, 255, 1) 70%, rgba(112, 84, 255, 1) 70%, rgba(107, 78, 255, 1) 100%);
+    background-repeat: no-repeat, no-repeat;
+    background-size: cover, cover;
+    box-shadow: 0 2px 36px rgba(black, 0.1);
+    cursor: pointer;
   }
 }
 </style>
